@@ -16,7 +16,7 @@ spec:
     spec:
       hostNetwork: true
       containers:
-      - image: k8s.gcr.io/kube-keepalived-vip:0.11
+      - image: localhost:5000/keepalived-vip:0.11_notify
         name: kube-keepalived-vip
         imagePullPolicy: Always
         securityContext:
@@ -25,6 +25,8 @@ spec:
         - mountPath: /lib/modules
           name: modules
           readOnly: true
+        - mountPath: /opt/notify
+          name: notify 
         # use downward API
         env:
           - name: POD_NAME
@@ -35,6 +37,8 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.namespace
+          - name: KEEPALIVED_NOTIFY
+            value: /opt/notify/notify.sh
         # to use unicast
         args:
         - --services-configmap=default/vip-configmap
@@ -45,3 +49,9 @@ spec:
       - hostPath:
           path: /lib/modules
         name: modules
+      - configMap:
+          name: vip-notify
+          defaultMode: 0744 
+        name: notify
+        
+
