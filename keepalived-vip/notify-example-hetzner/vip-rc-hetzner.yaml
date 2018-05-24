@@ -71,7 +71,8 @@ spec:
         # to use unicast
         args:
         - --services-configmap=default/vip-configmap
-        - --watch-all-namespaces
+        - --watch-all-namespacee-unicast=true
+        - --use-unicast=true
         # unicast uses the ip of the nodes instead of multicast
         # this is useful if running in cloud providers (like AWS)
         #- --use-unicast=true
